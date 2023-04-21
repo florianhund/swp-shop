@@ -27,7 +27,7 @@
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-      echo "<table width='600px'>";
+      echo "<table width='800px'>";
       echo "<tr>";
       echo "<th>Name</td>";
       echo "<th>Description</td>";

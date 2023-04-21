@@ -12,7 +12,14 @@
 
   if ($result->num_rows > 0) {
     if ($row = $result->fetch_assoc()) {
-      $conn->query("INSERT INTO ProductsInCart (UserId, ArticleId, PriceAtInsert, Amount) VALUES ('$user', '$article', " . $row['Price'] . ", $amount)");
+      $isInCart = $conn->query("SELECT Amount FROM ProductsInCart WHERE UserId = '$user' AND ArticleId = '$article'");
+      if ($isInCart->num_rows > 0) {
+        if ($row = $isInCart->fetch_assoc()) {
+          $conn->query("UPDATE ProductsInCart SET Amount = " . $row['Amount'] + 1 . " WHERE UserId = '$user' AND ArticleId = '$article'");
+        }
+      } else {
+        $conn->query("INSERT INTO ProductsInCart (UserId, ArticleId, PriceAtInsert, Amount) VALUES ('$user', '$article', " . $row['Price'] . ", $amount)");
+      }
       header('Location: shop.php');
     }
   }
